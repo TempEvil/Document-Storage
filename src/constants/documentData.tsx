@@ -1,7 +1,8 @@
 export const DocumentList: DocumentItem[] = [
   {
     id: 1,
-    name: "How to build .war file (Maven)",
+    section: "Maven",
+    name: "How to build .war file",
     files: {
       pomXMLFile: "/pom.xml",
       webXMLFile: "/web.xml",
@@ -65,8 +66,30 @@ export const DocumentList: DocumentItem[] = [
   },
   {
     id: 2,
-    name: "Push an existing repository from the command line",
+    section: "GitHub",
+    name: "How to Push a Project to an Existing GitHub Repository from the Command Line",
     steps: [
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `git init`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `git add .`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `git commit -m "first commit"`,
+        },
+      },
       {
         text: "",
         code: {

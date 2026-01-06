@@ -1,5 +1,6 @@
 type DocumentItem = {
   id: number;
+  section: string;
   name: string;
   files?: Record<FileKey, string>;
   steps: Step[];

@@ -38,10 +38,13 @@ const DocumentDetail = () => {
 
   return (
     <Flex direction="column" paddingInline={{ base: "1rem", md: "2rem", lg: "10rem" }} paddingBlock="1rem">
-      <Flex paddingBottom="0.75rem" cursor="pointer" onClick={() => navigate("/document")}>
-        <LuArrowLeft size="22px" />
-        Back
+      <Flex className="group" paddingBlock="0.5rem 1rem" cursor="pointer" onClick={() => navigate("/document")} alignItems="center" gap="0.5rem">
+        <Flex alignItems="center" gap="0.5rem">
+          <LuArrowLeft size="22px" />
+          Back
+        </Flex>
       </Flex>
+
       <Flex direction="column" gap="1rem">
         <Text fontSize={{ base: "xl", md: "2xl", lg: "3xl" }} fontWeight="bold">
           {documentData.name}
