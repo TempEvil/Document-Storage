@@ -1,0 +1,54 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /*? For debug overflow */
+  /* outline: 1px solid rgba(255, 0, 0, 0.15); */
+}
+
+body {
+  font-family: "Poppins", Arial;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  border: none;
+  outline: none;
+  font-family: "Poppins", Arial;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+  font-family: "Poppins", Arial;
+}
+
+@font-face {
+  font-family: "Poppins";
+  src: url(./assets/fonts/poppins/Poppins-Regular.ttf);
+}
+
+/*?? === Global scrollbar === */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  width: 6px;
+  height: 4px;
+  background: #ccc;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 24px;
+}
