@@ -116,7 +116,95 @@ export const DocumentList: DocumentItem[] = [
   {
     id: 3,
     section: "i18next",
-    name: "How to Set Up react-i18next and i18next in a React.js Project (progressing)",
-    steps: [],
+    name: "How to Set Up react-i18next and i18next in a React.js Project",
+    steps: [
+      {
+        text: "Install these packages",
+        code: {
+          language: "json",
+          value: `yarn add i18next react-i18next`,
+        },
+      },
+      {
+        text: "Create a languages folder inside the assets folder, then create two files inside it: en.json and kh.json or desire language",
+        highlights: ["languages", "assets", "en.json", "kh.json"],
+        code: {
+          language: "json",
+          value: `en.json
+{
+  "translation": {
+    "home": "HOME"
+  }
+}\n
+kh.json
+{
+  "translation": {
+    "home": "ទំព័រដើម"
+  }
+}\n
+`,
+        },
+      },
+      {
+        text: "Create a file named i18next.tsx inside the src folder and paste the following code into it",
+        highlights: ["i18next.tsx", "src"],
+        code: {
+          language: "json",
+          value: `import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
+
+import kh from "@/assets/languages/kh.json";
+import en from "@/assets/languages/en.json";
+
+// Get the saved language from localStorage, fallback to 'en'
+const savedLanguage = localStorage.getItem("language") || "en";
+
+i18next.use(initReactI18next).init({
+  resources: { 
+    kh: { translation: kh.translation }, 
+    en: { translation: en.translation } 
+  },
+  lng: savedLanguage, // Use the saved language
+  fallbackLng: "en",
+  interpolation: {
+    escapeValue: false, // React already does escaping
+  },
+});
+
+export default i18next;`,
+        },
+      },
+      {
+        text: "Open src/App.tsx and paste the following code",
+        highlights: ["src/App.tsx"],
+        code: {
+          language: "json",
+          value: `import { useEffect } from "react";
+import { changeLanguage } from "i18next";
+import "@/i18next";
+
+function App() {
+  useEffect(() => {
+    const setDefault = (key: string, value: string) => {
+      if (localStorage.getItem(key) === null) localStorage.setItem(key, value);
+    };
+
+    setDefault("language", "en");
+
+    const lng = localStorage.getItem("language") || "en";
+    changeLanguage(lng);
+  }, []);
+
+  return <div>Hello World</div>;
+}
+
+export default App;
+`,
+        },
+      },
+      {
+        text: "You've set the initial language, now you need a UI switch/toggle that",
+      },
+    ],
   },
 ];

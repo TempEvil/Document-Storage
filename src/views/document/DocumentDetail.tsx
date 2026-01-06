@@ -53,7 +53,7 @@ const DocumentDetail = () => {
         <Flex direction="column" gap="0.75rem">
           {documentData.steps.map((step, index) => (
             <Flex key={index} direction="column" gap="0.75rem">
-              {step.text ?? (
+              {step.text !== "" && (
                 <Text>
                   {index + 1}. {renderWithHighlights(step.text, step.highlights ?? [])}
                 </Text>
