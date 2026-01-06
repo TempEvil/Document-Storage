@@ -69,7 +69,7 @@ const Document = () => {
       </Flex>
 
       {/* Filter */}
-      <Flex gap="0.75rem" alignItems="center" overflowX="auto" paddingBottom="0.25rem">
+      <Flex gap="0.75rem" alignItems="center" overflowX="auto" paddingBlock="0.5rem 0.75rem">
         {sections.map((sec) => {
           const isActive = sec === activeSection;
           return (

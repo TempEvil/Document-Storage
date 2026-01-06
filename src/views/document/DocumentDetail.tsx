@@ -77,7 +77,7 @@ const DocumentDetail = () => {
 
               {/* Code */}
               {step.code?.value ? (
-                <Code padding="0.75rem" whiteSpace="pre" display="block" width="100%" fontSize="sm" lineHeight={1.4}>
+                <Code padding="0.75rem" whiteSpace="pre" display="block" width="100%" fontSize="sm" lineHeight={1.4} overflow="auto">
                   {step.code.value}
                 </Code>
               ) : null}

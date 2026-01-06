@@ -2,7 +2,7 @@ export const DocumentList: DocumentItem[] = [
   {
     id: 1,
     section: "Maven",
-    name: "How to Build a .war File for a React.js Project",
+    name: "How to Build a .war file for a React.js Project (TypeScript)- [tomcat]",
     files: {
       pomXMLFile: "/pom.xml",
       webXMLFile: "/web.xml",
@@ -40,6 +40,40 @@ export const DocumentList: DocumentItem[] = [
           value: `"scripts": {
   "mvn": "mvnd clean package",
 }`,
+        },
+      },
+      {
+        text: "Configure the Vite base path (vite.config.ts)",
+        highlights: ["Vite", "vite.config.ts"],
+        code: {
+          language: "json",
+          value: `import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+
+export default defineConfig({
+  plugins: [react()],
+  base: "/svn-name/",
+});
+`,
+        },
+      },
+      {
+        text: "After setting the base path in vite.config.ts, pass Vite's BASE_URL to React Router's basename",
+        highlights: ["vite.config.ts", "React Router's basename"],
+        code: {
+          language: "json",
+          value: `import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+export default function Router() {
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <Routes>
+        <Route index element={<Home />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+`,
         },
       },
       {
@@ -116,7 +150,7 @@ export const DocumentList: DocumentItem[] = [
   {
     id: 3,
     section: "i18next",
-    name: "How to Set Up react-i18next and i18next in a React.js Project",
+    name: "How to Set Up react-i18next and i18next in a React.js Project (TypeScript)",
     steps: [
       {
         text: "Install these packages",
@@ -146,7 +180,7 @@ kh.json
         },
       },
       {
-        text: "Create a file named i18next.tsx inside the src folder and paste the following code into it",
+        text: "Create a file named i18next.tsx inside the src folder and paste the following code",
         highlights: ["i18next.tsx", "src"],
         code: {
           language: "json",
