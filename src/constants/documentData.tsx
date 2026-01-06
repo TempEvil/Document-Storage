@@ -2,7 +2,7 @@ export const DocumentList: DocumentItem[] = [
   {
     id: 1,
     section: "Maven",
-    name: "How to build .war file",
+    name: "How to Build a .war File for a React.js Project",
     files: {
       pomXMLFile: "/pom.xml",
       webXMLFile: "/web.xml",
@@ -112,5 +112,11 @@ export const DocumentList: DocumentItem[] = [
         },
       },
     ],
+  },
+  {
+    id: 3,
+    section: "i18next",
+    name: "How to Set Up react-i18next and i18next in a React.js Project (progressing)",
+    steps: [],
   },
 ];
