@@ -163,8 +163,8 @@ export default function Router() {
         },
       },
       {
-        text: "Create a languages folder inside the assets folder, then create two files inside it: en.json and kh.json or desire language",
-        highlights: ["languages", "assets", "en.json", "kh.json"],
+        text: "Create assets/languages and add en.json and kh.json (or other desired languages).",
+        highlights: ["assets/languages", "en.json", "kh.json"],
         code: {
           language: "json",
           value: `// assets/languages/en.json\n
@@ -183,7 +183,7 @@ export default function Router() {
         },
       },
       {
-        text: "Create a file named i18next.tsx inside the src folder and paste the following code",
+        text: "In the src folder, create i18next.tsx and paste the code below.",
         highlights: ["i18next.tsx", "src"],
         code: {
           language: "json",
@@ -213,8 +213,8 @@ export default i18next;`,
         },
       },
       {
-        text: "Open src/App.tsx and paste the following code",
-        highlights: ["src/App.tsx"],
+        text: "In the src folder, open App.tsx and replace the existing content with the following code.",
+        highlights: ["src", "App.tsx"],
         code: {
           language: "json",
           value: `// src/App.tsx\n
@@ -260,11 +260,11 @@ export default App;
         },
       },
       {
-        text: "Create a libs folder inside the src folder, then create one file inside it: ReactQuery.tsx",
-        highlights: ["libs", "src", "ReactQuery.tsx"],
+        text: "Inside the src folder, create a libs folder and add ReactQuery.ts",
+        highlights: ["libs", "src", "ReactQuery.ts"],
         code: {
           language: "json",
-          value: `// src/libs/ReactQuery.tsx\n
+          value: `// src/libs/ReactQuery.ts\n
 import { QueryClient } from "@tanstack/react-query";
 
 const defaultQueryClientOptions = {
@@ -292,11 +292,10 @@ export const query_client = new QueryClient({
         code: {
           language: "json",
           value: `// src/main.tsx\n
-import "./index.css";
 import App from "./App.tsx";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { query_client } from "./libs/ReactQuery.tsx";
+import { query_client } from "./libs/ReactQuery.ts";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 createRoot(document.getElementById("root")!).render(
@@ -325,11 +324,11 @@ createRoot(document.getElementById("root")!).render(
         },
       },
       {
-        text: "Create a utils folder inside the src folder, then create one file inside it: Secret.tsx",
-        highlights: ["utils", "src", "Secret.tsx"],
+        text: "Inside src, create utils/common and add Secret.ts",
+        highlights: ["utils/common", "src", "Secret.ts"],
         code: {
           language: "json",
-          value: `src/utils/Secret.tsx\n
+          value: `src/utils/common/Secret.ts\n
 import cryptoJs from "crypto-js";
 import Cookies from "js-cookie";
 
@@ -413,6 +412,9 @@ export const cookies = {
 `,
         },
       },
+      {
+        text: "That's all for now. This setup will be used later for React Query CRUD and other use cases."
+      }
     ],
   },
   //! 06
@@ -435,15 +437,15 @@ export const cookies = {
         },
       },
       {
-        text: "Create a utils folder inside the src folder, then create two folders inside it: apis and hooks",
+        text: "Create a utils folder in src folder, with two subfolders: apis and hooks.",
         highlights: ["utils", "src", "apis", "hooks"],
       },
       {
-        text: "In apis folder create one file (e.g. province.tsx) and paste the following code",
-        highlights: ["apis", "province.tsx"],
+        text: "In the apis folder, create a file (e.g. province.ts) and paste the following code.",
+        highlights: ["apis", "province.ts"],
         code: {
-          language: "ts",
-          value: `// src/utils/apis/province.tsx\n
+          language: "json",
+          value: `// src/utils/apis/province.ts\n
 import axiosInstance from "../common/axiosInstance";
 import assertValidId from "../common/assertValidId";
 
