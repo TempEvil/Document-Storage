@@ -1,8 +1,8 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Flex, Text, Strong, Button, Code } from "@chakra-ui/react";
 // Icon
-import { LuArrowLeft } from "react-icons/lu";
+import { LuArrowLeft, LuCheck, LuCopy } from "react-icons/lu";
 // Data
 import { DocumentList } from "@/constants/documentData";
 
@@ -28,8 +28,29 @@ const downloadFile = (url: string) => {
 const DocumentDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
+  const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   useEffect(() => window.scrollTo(0, 0), []);
+
+  const copyToClipboard = async (text: string) => {
+    // Modern API
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    // Fallback for older browsers
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.left = "-9999px";
+    textarea.style.top = "0";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+  };
 
   const documentData = (DocumentList as DocumentItem[]).find((doc) => doc.id === Number(id));
 
@@ -77,9 +98,32 @@ const DocumentDetail = () => {
 
               {/* Code */}
               {step.code?.value ? (
-                <Code padding="0.75rem" whiteSpace="pre" display="block" width="100%" fontSize="sm" lineHeight={1.4} overflow="auto">
-                  {step.code.value}
-                </Code>
+                <Flex direction="column" width="100%" position="relative">
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    onClick={async () => {
+                      const key = `${documentData.id}-${index}`;
+                      await copyToClipboard(step.code!.value);
+                      setCopiedKey(key);
+                      window.setTimeout(() => setCopiedKey((prev) => (prev === key ? null : prev)), 1200);
+                    }}
+                    _hover={{ bgColor: "gray.200" }}
+                    _active={{ bgColor: "gray.200" }}
+                    transition="all 0.15s ease"
+                    position="absolute"
+                    top="0"
+                    right="0"
+                    paddingInline="0.5rem"
+                  >
+                    {copiedKey === `${documentData.id}-${index}` ? <LuCheck /> : <LuCopy />}
+                    {/* {copiedKey === `${documentData.id}-${index}` ? "Copied" : "Copy"} */}
+                  </Button>
+
+                  <Code padding="0.75rem" whiteSpace="pre" display="block" width="100%" fontSize="sm" lineHeight={1.4} overflow="auto">
+                    {step.code.value}
+                  </Code>
+                </Flex>
               ) : null}
             </Flex>
           ))}

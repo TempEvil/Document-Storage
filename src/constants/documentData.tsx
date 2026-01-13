@@ -1,4 +1,5 @@
 export const DocumentList: DocumentItem[] = [
+  //! 01
   {
     id: 1,
     section: "Maven",
@@ -21,7 +22,7 @@ export const DocumentList: DocumentItem[] = [
         highlights: ["pom.xml", "groupId", "artifactId", "SVN"],
         code: {
           language: "json",
-          value: `<groupId>\n\tsvn-name\n</groupId>\n\n<artifactId>\n\tsvn-name\n</artifactId>`,
+          value: `// pom.xml\n\n<groupId>\n\tsvn-name\n</groupId>\n\n<artifactId>\n\tsvn-name\n</artifactId>`,
         },
       },
       {
@@ -29,7 +30,7 @@ export const DocumentList: DocumentItem[] = [
         highlights: ["web.xml", "display-name", "package.json"],
         code: {
           language: "json",
-          value: `<display-name>\n\tpackage.json-name\n</display-name>`,
+          value: `// web.xml\n\n<display-name>\n\tpackage.json-name\n</display-name>`,
         },
       },
       {
@@ -37,7 +38,7 @@ export const DocumentList: DocumentItem[] = [
         highlights: ["package.json"],
         code: {
           language: "json",
-          value: `"scripts": {
+          value: `// package.json\n\n"scripts": {
   "mvn": "mvnd clean package",
 }`,
         },
@@ -47,7 +48,7 @@ export const DocumentList: DocumentItem[] = [
         highlights: ["Vite", "vite.config.ts"],
         code: {
           language: "json",
-          value: `import { defineConfig } from "vite";
+          value: `// vite.config.ts\n\nimport { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
@@ -62,7 +63,7 @@ export default defineConfig({
         highlights: ["vite.config.ts", "React Router's basename"],
         code: {
           language: "json",
-          value: `import { BrowserRouter, Routes, Route } from "react-router-dom";
+          value: `// src/Router.tsx\n\nimport { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function Router() {
   return (
@@ -98,6 +99,7 @@ export default function Router() {
       },
     ],
   },
+  //! 02
   {
     id: 2,
     section: "GitHub",
@@ -147,6 +149,7 @@ export default function Router() {
       },
     ],
   },
+  //! 03
   {
     id: 3,
     section: "i18next",
@@ -164,13 +167,13 @@ export default function Router() {
         highlights: ["languages", "assets", "en.json", "kh.json"],
         code: {
           language: "json",
-          value: `en.json
+          value: `// assets/languages/en.json\n
 {
   "translation": {
     "home": "HOME"
   }
 }\n
-kh.json
+// assets/languages/kh.json
 {
   "translation": {
     "home": "ទំព័រដើម"
@@ -184,7 +187,8 @@ kh.json
         highlights: ["i18next.tsx", "src"],
         code: {
           language: "json",
-          value: `import i18next from "i18next";
+          value: `// src/i18next.tsx\n
+import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import kh from "@/assets/languages/kh.json";
@@ -213,7 +217,8 @@ export default i18next;`,
         highlights: ["src/App.tsx"],
         code: {
           language: "json",
-          value: `import { useEffect } from "react";
+          value: `// src/App.tsx\n
+import { useEffect } from "react";
 import { changeLanguage } from "i18next";
 import "@/i18next";
 
@@ -238,6 +243,71 @@ export default App;
       },
       {
         text: "You've set the initial language, now you need a UI switch/toggle that",
+      },
+    ],
+  },
+  //! 04
+  {
+    id: 4,
+    name: "How to set up react query",
+    section: "React Query",
+    steps: [
+      {
+        text: "Install this package",
+        code: {
+          language: "json",
+          value: `yarn add @tanstack/react-query@5.90.12`,
+        },
+      },
+      {
+        text: "Create a libs folder inside the src folder, then create one file inside it: ReactQuery.tsx",
+        highlights: ["libs", "src", "ReactQuery.tsx"],
+        code: {
+          language: "json",
+          value: `// src/libs/ReactQuery.tsx\n
+import { QueryClient } from "@tanstack/react-query";
+
+const defaultQueryClientOptions = {
+  queries: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    retry: (failureCount: any, error: any) => {
+      // Don't retry for 401 errors
+      if (error?.response?.status === 401) return false;
+      return failureCount < 3;
+    },
+    refetchOnMount: true, // triggers when the user navigates to another page and then comes back, as long as the component was unmounted and mounted again.
+    refetchOnReconnect: true, // If the user loses internet and then reconnects, React Query will refetch the query automatically.
+  },
+};
+
+export const query_client = new QueryClient({
+  defaultOptions: defaultQueryClientOptions,
+});
+`,
+        },
+      },
+      {
+        text: "Setup React Tanstack - QueryClientProvider",
+        highlights: ["QueryClientProvider"],
+        code: {
+          language: "json",
+          value: `// src/main.tsx\n
+import "./index.css";
+import App from "./App.tsx";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { query_client } from "./libs/ReactQuery.tsx";
+import { QueryClientProvider } from "@tanstack/react-query";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <QueryClientProvider client={query_client}>
+        <App />
+    </QueryClientProvider>
+  </StrictMode>
+);
+`,
+        },
       },
     ],
   },

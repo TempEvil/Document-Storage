@@ -1,0 +1,20 @@
+{
+    id: 1,
+    name: "How to set up react query",
+    section: "React Query",
+    files: {
+      pomXMLFile: "/pom.xml",
+      webXMLFile: "/web.xml",
+    },
+    steps: [
+      {
+        text: "Install these packages",
+        code: {
+          language: "json",
+          value: `yarn add @tanstack/react-query`,
+        },
+        highlights: ["Install"],
+        downloads: ["pomXMLFile", "webXMLFile"], // keys from files
+      },
+    ],
+},

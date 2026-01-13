@@ -1,14 +1,25 @@
-.loader {
-  width: fit-content;
-  font-weight: bold;
-  font-family: monospace;
-  font-size: 30px;
-  clip-path: inset(0 3ch 0 0);
-  animation: l4 1s steps(4) infinite;
+.loading > * {
+  animation: dotPulse 0.9s infinite ease-in-out;
 }
 
-@keyframes l4 {
-  to {
-    clip-path: inset(0 -1ch 0 0);
+/* first & last: same animation timing */
+.loading > :nth-child(1),
+.loading > :nth-child(3) {
+  animation-delay: 0s; /* or 0.3s if you want them both shifted */
+}
+
+/* middle: different timing */
+.loading > :nth-child(2) {
+  animation-delay: 0.45s;
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
   }
 }
