@@ -1,3 +1,5 @@
+All Feature:
+
 {
     id: 1,
     name: "How to set up react query",
@@ -18,3 +20,35 @@
       },
     ],
 },
+
+Default Feature 
+{
+  id: 5,
+  name: "How to set up website security",
+  section: "Security",
+  steps: [],
+},
+
+Security Website
+  //! 05
+  {
+    id: 5,
+    name: "How to set up website security for React.js (TypeScript) - Progressing",
+    section: "Security",
+    files: {
+      PomXMLFile: "/pom.xml",
+    },
+    steps: [
+      {
+        text: "Install these packages",
+        code: {
+          language: "json",
+          value: `yarn add crypto-js js-cookie @types/crypto-js @types/js-cookie`,
+        },
+      },
+      {
+        text: "Download the required files",
+        downloads: ["PomXMLFile"],
+      },
+    ],
+  },

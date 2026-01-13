@@ -3,15 +3,15 @@ export const DocumentList: DocumentItem[] = [
   {
     id: 1,
     section: "Maven",
-    name: "How to Build a .war file for a React.js Project (TypeScript)- [tomcat]",
+    name: "How to Build a .war file for a React.js Project (TypeScript) - [tomcat]",
     files: {
-      pomXMLFile: "/pom.xml",
-      webXMLFile: "/web.xml",
+      PomXMLFile: "/pom.xml",
+      WebXMLFile: "/web.xml",
     },
     steps: [
       {
         text: "Download the required configuration files",
-        downloads: ["pomXMLFile", "webXMLFile"], // keys from files
+        downloads: ["PomXMLFile", "WebXMLFile"], // keys from files
       },
       {
         text: "Place the downloaded files in the root directory of your ReactJS project",
@@ -307,6 +307,291 @@ createRoot(document.getElementById("root")!).render(
   </StrictMode>
 );
 `,
+        },
+      },
+    ],
+  },
+  //! 05
+  {
+    id: 5,
+    name: "How to set up website security for React.js (TypeScript)",
+    section: "Security",
+    steps: [
+      {
+        text: "Install these packages",
+        code: {
+          language: "json",
+          value: `yarn add crypto-js js-cookie @types/crypto-js @types/js-cookie`,
+        },
+      },
+      {
+        text: "Create a utils folder inside the src folder, then create one file inside it: Secret.tsx",
+        highlights: ["utils", "src", "Secret.tsx"],
+        code: {
+          language: "json",
+          value: `src/utils/Secret.tsx\n
+import cryptoJs from "crypto-js";
+import Cookies from "js-cookie";
+
+const charactor_list = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+const cookie_list = ["access_token", "refresh_token"] as const;
+const APP_NAME = "project";
+const APP_SECRET = "project-secret";
+
+type CookieKey = (typeof cookie_list)[number];
+
+type CookieNameMap = {
+  [key in CookieKey]: string;
+};
+
+// 1) Use a global path (+ consistent options for set/remove)
+const COOKIE_OPTS = {
+  path: "/",
+  sameSite: "lax" as const,
+  secure: typeof window !== "undefined" ? window.location.protocol === "https:" : true,
+};
+
+// 2) Guard decryption; clear bad cookies instead of throwing
+function safeDecrypt(b64: string, secret: string): string | null {
+  try {
+    const wa = cryptoJs.AES.decrypt(b64, secret);
+    const s = cryptoJs.enc.Utf8.stringify(wa); // throws on malformed bytes
+    if (!s) throw new Error("empty");
+    return s;
+  } catch {
+    // remove both cookies with the SAME options so we don't loop on bad data
+    Cookies.remove(generated_cookie.access_token, COOKIE_OPTS);
+    Cookies.remove(generated_cookie.refresh_token, COOKIE_OPTS);
+    return null;
+  }
+}
+
+function generateCookieName(): CookieNameMap {
+  let helper_c = 10;
+  for (let i = 0; i < APP_NAME.length; i++) {
+    helper_c += APP_NAME.charCodeAt(i) ^ APP_NAME.length;
+  }
+
+  const generated_cookie_name = {} as CookieNameMap;
+
+  cookie_list.forEach((cookie) => {
+    let temp_cookie_name = "";
+    for (let j = 0; j < cookie.length; j++) {
+      const charCode = Math.floor((cookie.charCodeAt(j) * helper_c) % charactor_list.length);
+      temp_cookie_name += charactor_list[charCode];
+    }
+    generated_cookie_name[cookie] = temp_cookie_name;
+  });
+
+  return generated_cookie_name;
+}
+
+export const generated_cookie = generateCookieName();
+
+export const cookies = {
+  get_token: (): string | null => {
+    const access_token = Cookies.get(generated_cookie.access_token);
+    return access_token ? safeDecrypt(access_token, APP_SECRET) : null; // 3) use safe decrypt
+  },
+  get_refresh_token: (): string | null => {
+    const refresh_token = Cookies.get(generated_cookie.refresh_token);
+    return refresh_token ? safeDecrypt(refresh_token, APP_SECRET) : null; // 3) use safe decrypt
+  },
+  set_token: (access_token: string, refresh_token: string): void => {
+    // Clear first to avoid “half state”, then set with global path
+    Cookies.remove(generated_cookie.access_token, COOKIE_OPTS);
+    Cookies.remove(generated_cookie.refresh_token, COOKIE_OPTS);
+
+    Cookies.set(generated_cookie.access_token, cryptoJs.AES.encrypt(access_token, APP_SECRET).toString(), COOKIE_OPTS);
+    Cookies.set(generated_cookie.refresh_token, cryptoJs.AES.encrypt(refresh_token, APP_SECRET).toString(), COOKIE_OPTS);
+  },
+  clear_cookies: (): void => {
+    Cookies.remove(generated_cookie.access_token, COOKIE_OPTS); // use same options!
+    Cookies.remove(generated_cookie.refresh_token, COOKIE_OPTS);
+  },
+};
+`,
+        },
+      },
+    ],
+  },
+  //! 06
+  {
+    id: 6,
+    name: "React Query CRUD (Part 1): How to create functions to fetch and mutate data from API - Progressing",
+    section: "React Query",
+    files: {
+      PomXMLFile: "/pom.xml",
+    },
+    steps: [
+      {
+        text: "Download the required files",
+      },
+      {
+        text: "Install this package",
+        code: {
+          language: "json",
+          value: `yarn add axios crypto-js js-cookie @types/crypto-js @types/js-cookie`,
+        },
+      },
+      {
+        text: "Create a utils folder inside the src folder, then create two folders inside it: apis and hooks",
+        highlights: ["utils", "src", "apis", "hooks"],
+      },
+      {
+        text: "In apis folder create one file (e.g. province.tsx) and paste the following code",
+        highlights: ["apis", "province.tsx"],
+        code: {
+          language: "ts",
+          value: `// src/utils/apis/province.tsx\n
+import axiosInstance from "../common/axiosInstance";
+import assertValidId from "../common/assertValidId";
+
+// //! POST: List Province with filters
+export async function listProvince(payload: KeyValue): Promise<ResponseWithPagination<KeyValue[]>> {
+  try {
+    const res = await axiosInstance.post("/province/list", payload);
+
+    const { header, body } = res.data;
+
+    if (header.statusCode >= 200 && header.statusCode < 300) {
+      return {
+        pagination: header.pagination ?? null,
+        body: body.map((province: KeyValue, index: number) => ({
+          ...province,
+          no: payload.rowsPerPage * (payload.page - 1) + index + 1,
+        })),
+      };
+    }
+    return Promise.reject(res.data);
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `//! GET: List Province Using Get
+export async function listProvinceUsingGet(): Promise<ResponseAPI<KeyValue[]>> {
+  try {
+    const res = await axiosInstance.get("/province/list");
+
+    const { header, body } = res.data;
+
+    if (header.statusCode >= 200 && header.statusCode < 300) {
+      return { header, body };
+    } else {
+      return Promise.reject(res.data);
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `//! POST: Create Province
+export async function createProvince(payload: KeyValue): Promise<ResponseAPI<KeyValue>> {
+  try {
+    const res = await axiosInstance.post("/province/create", payload);
+
+    const { header, body } = res.data;
+
+    if (header.statusCode >= 200 && header.statusCode < 300) {
+      return { header, body };
+    } else {
+      return Promise.reject(res.data);
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `//! PATCH: Update Province
+export async function updateProvince(payload: KeyValue): Promise<ResponseAPI<KeyValue>> {
+  const { id, ...rest } = payload;
+  assertValidId(id);
+
+  try {
+    const res = await axiosInstance.patch("/province/update?id=" + id, rest);
+
+    const { header, body } = res.data;
+
+    if (header.statusCode >= 200 && header.statusCode < 300) {
+      return { header, body };
+    } else {
+      return Promise.reject(res.data);
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `//! GET: Find Province
+export async function findProvince(payload: { id: number }): Promise<ResponseAPI<KeyValue>> {
+  const { id } = payload;
+  assertValidId(id);
+
+  try {
+    const res = await axiosInstance.get("/province/find?id=" + id);
+
+    const { header, body } = res.data;
+
+    if (header.statusCode >= 200 && header.statusCode < 300) {
+      return { header, body };
+    } else {
+      return Promise.reject(res.data);
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}
+`,
+        },
+      },
+      {
+        text: "",
+        code: {
+          language: "json",
+          value: `//! DELETE: Delete Province
+export async function deleteProvince(payload: { id: number }): Promise<ResponseAPI<KeyValue>> {
+  const { id } = payload;
+  assertValidId(id);
+
+  try {
+    const res = await axiosInstance.delete("/province/delete?id=" + id);
+
+    const { header, body } = res.data;
+
+    if (header.statusCode >= 200 && header.statusCode < 300) {
+      return { header, body };
+    } else {
+      return Promise.reject(res.data);
+    }
+  } catch (err) {
+    return Promise.reject(err);
+  }
+}`,
         },
       },
     ],
