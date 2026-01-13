@@ -183,11 +183,11 @@ export default function Router() {
         },
       },
       {
-        text: "In the src folder, create i18next.tsx and paste the code below.",
-        highlights: ["i18next.tsx", "src"],
+        text: "In the src folder, create i18next.ts and paste the code below.",
+        highlights: ["i18next.ts", "src"],
         code: {
           language: "json",
-          value: `// src/i18next.tsx\n
+          value: `// src/i18next.ts\n
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
 
